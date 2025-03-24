@@ -55,9 +55,10 @@ const addOne = async (req, res) => {
 
 const updateOne = async (req, res) => {
   try {
-      await db.collection(req.baseUrl).doc(req.params.id).update(req.body)
+      const store = db.collection(req.baseUrl).doc(req.params.id)
+      await store.update(req.body)
       .then((item) => {
-          res.status(200).json({ message: `Store ${item.id} was updated` })
+        res.status(200).json({ message: `Store ${store.id} was updated` })
       })
       .catch(err => {
           res.status(500).json({ message: err.message })
@@ -69,9 +70,10 @@ const updateOne = async (req, res) => {
 
 const deleteOne = async (req, res) => {
   try {
-      await db.collection(req.baseUrl).doc(req.params.id).delete()
+      const store = db.collection(req.baseUrl).doc(req.params.id)
+      await store.delete()
       .then((item) => {
-          res.status(200).json({ message: `Store ${item.id} was deleted` })
+          res.status(200).json({ message: `Store ${store.id} was deleted` })
       })
       .catch(err => {
           res.status(500).json({ message: err.message })
@@ -81,11 +83,41 @@ const deleteOne = async (req, res) => {
   }
 }
 
+const getVwCalcGenericValues = async (req, res) => {
+    try {
+        await db.collection(req.baseUrl).doc('generic').get()
+        .then((item) => {
+            res.status(200).json(item.data())
+        })
+        .catch(err => {
+            res.status(500).json({ message: err.message })
+        })
+    } catch(err) {
+        res.status(500).json({ message: err.message })
+    }
+}
+
+const getVwCalcOtherValues = async (req, res) => {
+    try {
+        await db.collection(req.baseUrl).doc('electric').get()
+        .then((item) => {
+            res.status(200).json(item.data())
+        })
+        .catch(err => {
+            res.status(500).json({ message: err.message })
+        })
+    } catch(err) {
+        res.status(500).json({ message: err.message })
+    }
+}
+
 
 module.exports = {
   getAll,
   getOne,
   addOne,
   updateOne,
-  deleteOne
+  deleteOne,
+  getVwCalcGenericValues,
+  getVwCalcOtherValues
 }

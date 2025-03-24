@@ -4,6 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const storeRoutes = require('./routes/stores')
 const fizzyRoutes = require('./routes/fizzy')
+const vwCalcRoutes = require('./routes/vwCalc')
 
 const app = express();
 const port = 3000;
@@ -18,15 +19,7 @@ app.get('/', (req, res) => {
 
 app.use('/stores', storeRoutes)
 app.use('/fizz', fizzyRoutes)
-
-app.get('/api/vw-calc/:model?', (req, res) => {
-    if(req.params.model) {
-        const model = (req.params.model).toUpperCase()
-        res.send(`VW Calc ${model}`)
-    } else {
-        res.send("VW Calc General")
-    }
-})
+app.use('/vw-calc', vwCalcRoutes)
 
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`)
