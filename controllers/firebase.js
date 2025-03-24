@@ -97,6 +97,21 @@ const getVwCalcGenericValues = async (req, res) => {
     }
 }
 
+const updateVwCalcGenericValues = async (req, res) => {
+    try {
+        const store = db.collection(req.baseUrl).doc('generic')
+        await store.update(req.body)
+        .then((item) => {
+          res.status(200).json({ message: `VW Calc Generic Value updated` })
+        })
+        .catch(err => {
+            res.status(500).json({ message: err.message })
+        })
+    } catch(err) {
+        res.status(500).json({ message: err.message })
+    }
+}
+
 const getVwCalcOtherValues = async (req, res) => {
     try {
         await db.collection(req.baseUrl).doc('electric').get()
@@ -111,6 +126,20 @@ const getVwCalcOtherValues = async (req, res) => {
     }
 }
 
+const updateVwCalcOtherValues = async (req, res) => {
+    try {
+        const store = db.collection(req.baseUrl).doc('electric')
+        await store.update(req.body)
+        .then((item) => {
+          res.status(200).json({ message: `VW Calc Other Value updated` })
+        })
+        .catch(err => {
+            res.status(500).json({ message: err.message })
+        })
+    } catch(err) {
+        res.status(500).json({ message: err.message })
+    }
+}
 
 module.exports = {
   getAll,
@@ -119,5 +148,7 @@ module.exports = {
   updateOne,
   deleteOne,
   getVwCalcGenericValues,
-  getVwCalcOtherValues
+  updateVwCalcGenericValues,
+  getVwCalcOtherValues,
+  updateVwCalcOtherValues
 }
